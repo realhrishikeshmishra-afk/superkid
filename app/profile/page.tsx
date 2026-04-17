@@ -53,9 +53,9 @@ export default async function ProfilePage() {
               <Link href="/profile" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#fdf2f7] text-[#e91c78] font-bold text-sm">
                 <Package className="w-4 h-4" /> Order History
               </Link>
-              <button disabled className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#fde8f3] text-[#8c5d73] font-bold text-sm text-left transition-colors opacity-50 cursor-not-allowed">
-                <MapPin className="w-4 h-4" /> Addresses (Coming Soon)
-              </button>
+              <Link href="/profile/addresses" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-[#fde8f3] text-[#8c5d73] font-bold text-sm transition-colors transition-all">
+                <MapPin className="w-4 h-4" /> Saved Addresses
+              </Link>
 
               <div className="mt-4 pt-4 border-t border-[#f0d9e8]">
                 <LogoutButton />
@@ -94,11 +94,11 @@ export default async function ProfilePage() {
                         </div>
                       </div>
                       
-                      <div className="flex gap-4 overflow-x-auto pb-2">
+                      <div className="flex gap-4 overflow-x-auto pb-2 mb-4">
                         {order.items.map(item => (
                           <div key={item.id} className="flex-shrink-0 flex items-center gap-3 bg-[#fdf2f7] p-2 pr-4 rounded-xl">
                             <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm overflow-hidden border border-[#f0d9e8]">
-                              <img src={`https://loremflickr.com/100/100/stickers,kids?random=${item.productId}`} alt={item.product.name} className="w-full h-full object-cover" />
+                              <img src={`https://loremflickr.com/100/100/${encodeURIComponent(item.product.name.toLowerCase())},sticker,art?random=${item.productId}`} alt={item.product.name} className="w-full h-full object-cover" />
                             </div>
                             <div>
                               <p className="text-xs font-bold text-[#12040a] max-w-[120px] truncate">{item.product.name}</p>
@@ -107,6 +107,17 @@ export default async function ProfilePage() {
                           </div>
                         ))}
                       </div>
+
+                      {order.shippingStreet && (
+                        <div className="bg-[#fde8f3]/30 border border-[#fde8f3] rounded-xl p-3 flex items-start gap-3">
+                          <MapPin className="w-4 h-4 text-[#e91c78] mt-0.5 flex-shrink-0" />
+                          <div className="text-[11px] font-medium text-[#8c5d73] leading-relaxed">
+                            <p className="font-bold text-[#12040a]">Shipping to:</p>
+                            <p>{order.shippingStreet}, {order.shippingCity}, {order.shippingState} - {order.shippingZip}</p>
+                            <p className="mt-1">📞 {order.shippingPhone}</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

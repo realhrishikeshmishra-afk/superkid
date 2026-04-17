@@ -10,21 +10,51 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { items, total } = body;
+    const { items, total, shipping } = body;
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
     }
 
+    if (!shipping) {
+      return NextResponse.json({ error: "Shipping details required" }, { status: 400 });
+    }
+
     // Ensure the user exists in our DB
     const dbUser = await prisma.user.upsert({
       where: { clerkId: userId },
-      update: {},
+      update: {
+        phone: shipping.phone,
+        name: shipping.name
+      },
       create: {
         clerkId: userId,
-        email: "user@example.com", // Fallback, could be queried from Clerk API if needed
-        name: "SuperKid Shopper",
+        email: "pending@superkid.com", // Webhook will update this, or we can fetch via Clerk SDK
+        name: shipping.name,
+        phone: shipping.phone
       },
+    });
+
+    // Save/Update the address in the saved addresses book
+    await prisma.address.upsert({
+      where: { id: `addr-${dbUser.id}` }, // We use a predictable ID for the default for now
+      update: {
+        street: shipping.street,
+        city: shipping.city,
+        state: shipping.state,
+        zipCode: shipping.zip,
+        phoneNumber: shipping.phone,
+      },
+      create: {
+        id: `addr-${dbUser.id}`,
+        userId: dbUser.id,
+        street: shipping.street,
+        city: shipping.city,
+        state: shipping.state,
+        zipCode: shipping.zip,
+        phoneNumber: shipping.phone,
+        isDefault: true
+      }
     });
 
     // Create dummy category if they don't exist (For Testing)
@@ -59,6 +89,11 @@ export async function POST(req: NextRequest) {
         userId: dbUser.id,
         total: total,
         status: "processing",
+        shippingStreet: shipping.street,
+        shippingCity: shipping.city,
+        shippingState: shipping.state,
+        shippingZip: shipping.zip,
+        shippingPhone: shipping.phone,
         items: {
           create: items.map((item: any) => ({
             productId: item.id.toString(),
@@ -73,8 +108,11 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ success: true, order });
-  } catch (error) {
+  } catch (error: any) {
     console.error("FAKE CHECKOUT ERROR:", error);
-    return NextResponse.json({ error: "Failed to process order" }, { status: 500 });
+    return NextResponse.json({ 
+      error: "Failed to process order", 
+      details: error.message || "Unknown error" 
+    }, { status: 500 });
   }
 }

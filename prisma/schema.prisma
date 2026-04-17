@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "../lib/generated/client"
 }
 
 datasource db {
@@ -8,12 +9,27 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  clerkId   String   @unique
+  id        String    @id @default(cuid())
+  clerkId   String    @unique
   email     String
   name      String?
-  createdAt DateTime @default(now())
+  phone     String?
+  createdAt DateTime  @default(now())
   orders    Order[]
+  addresses Address[]
+}
+
+model Address {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  street      String
+  city        String
+  state       String
+  zipCode     String
+  phoneNumber String
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
 }
 
 model Category {
@@ -40,13 +56,21 @@ model Product {
 }
 
 model Order {
-  id        String      @id @default(cuid())
-  userId    String
-  user      User        @relation(fields: [userId], references: [id])
-  total     Float
-  status    String      @default("pending")
-  createdAt DateTime    @default(now())
-  items     OrderItem[]
+  id             String      @id @default(cuid())
+  userId         String
+  user           User        @relation(fields: [userId], references: [id])
+  total          Float
+  status         String      @default("pending")
+  
+  // Shipping details for the order
+  shippingStreet String?
+  shippingCity   String?
+  shippingState  String?
+  shippingZip    String?
+  shippingPhone  String?
+
+  createdAt      DateTime    @default(now())
+  items          OrderItem[]
 }
 
 model OrderItem {

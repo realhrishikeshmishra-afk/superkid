@@ -76,20 +76,28 @@ export default function ProductDetailsClient({ product, relatedProducts }: Produ
                 <Heart className={`w-5 h-5 transition-colors ${wishlisted ? "fill-[#e91c78] text-[#e91c78]" : "text-[#8c5d73]"}`} />
               </button>
 
-              <img src={`https://loremflickr.com/800/800/stickers,kids?random=${product.id || Math.random()}`} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            </div>
+            <img 
+              src={`https://loremflickr.com/800/800/${encodeURIComponent(product.name.toLowerCase())},sticker,art?random=${product.id || Math.random()}`} 
+              alt={product.name} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+            />
+          </div>
 
-            {/* Thumbnails */}
-            <div className="grid grid-cols-4 gap-3">
-              {[1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className="aspect-square bg-white rounded-[14px] border-2 border-[#e91c78]/20 hover:border-[#e91c78] flex items-center justify-center cursor-pointer transition-all overflow-hidden"
-                >
-                  <img src={`https://loremflickr.com/200/200/stickers,kids?random=${product.id || i}`} alt="Thumbnail" className="w-full h-full object-cover" />
-                </div>
-              ))}
-            </div>
+          {/* Thumbnails */}
+          <div className="grid grid-cols-4 gap-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                className="aspect-square bg-white rounded-[14px] border-2 border-[#e91c78]/20 hover:border-[#e91c78] flex items-center justify-center cursor-pointer transition-all overflow-hidden"
+              >
+                <img 
+                  src={`https://loremflickr.com/200/200/${encodeURIComponent(product.name.toLowerCase())},sticker,art?random=${product.id || i}`} 
+                  alt="Thumbnail" 
+                  className="w-full h-full object-cover" 
+                />
+              </div>
+            ))}
+          </div>
           </div>
 
           {/* ── RIGHT: Product Details ── */}

@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  clerkId   String    @unique
+  email     String
+  name      String?
+  phone     String?
+  createdAt DateTime  @default(now())
+  orders    Order[]
+  addresses Address[]
+}
+
+model Address {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  street      String
+  city        String
+  state       String
+  zipCode     String
+  phoneNumber String
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  slug     String    @unique
+  icon     String?
+  products Product[]
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String?
+  price       Float
+  salePrice   Float?
+  stock       Int         @default(0)
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id])
+  emoji       String?
+  createdAt   DateTime    @default(now())
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  total  Float
+  status String @default("pending")
+
+  // Shipping details for the order
+  shippingStreet String?
+  shippingCity   String?
+  shippingState  String?
+  shippingZip    String?
+  shippingPhone  String?
+
+  createdAt DateTime    @default(now())
+  items     OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+}
