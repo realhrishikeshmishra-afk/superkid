@@ -97,8 +97,8 @@ export default async function ProfilePage() {
                       <div className="flex gap-4 overflow-x-auto pb-2">
                         {order.items.map(item => (
                           <div key={item.id} className="flex-shrink-0 flex items-center gap-3 bg-[#fdf2f7] p-2 pr-4 rounded-xl">
-                            <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center text-2xl shadow-sm">
-                              {item.product.emoji || "📦"}
+                            <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm overflow-hidden border border-[#f0d9e8]">
+                              <img src={`https://loremflickr.com/100/100/stickers,kids?random=${item.productId}`} alt={item.product.name} className="w-full h-full object-cover" />
                             </div>
                             <div>
                               <p className="text-xs font-bold text-[#12040a] max-w-[120px] truncate">{item.product.name}</p>

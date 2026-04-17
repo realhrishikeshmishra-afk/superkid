@@ -138,9 +138,9 @@ export default function CartPage() {
                   key={item.id}
                   className="bg-white border border-[#f0d9e8] rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-5 hover:border-[#e91c78]/30 hover:shadow-[0_4px_20px_rgba(233,28,120,0.08)] transition-all"
                 >
-                  {/* Emoji Thumb */}
-                  <div className="w-20 h-20 bg-[#fdf2f7] rounded-2xl flex items-center justify-center text-4xl flex-shrink-0">
-                    {item.emoji}
+                  {/* Image Thumb */}
+                  <div className="w-20 h-20 bg-[#fdf2f7] rounded-2xl flex items-center justify-center flex-shrink-0 relative overflow-hidden">
+                    <img src={`https://loremflickr.com/200/200/stickers,kids?random=${item.id}`} alt={item.name} className="w-full h-full object-cover" />
                   </div>
 
                   {/* Info */}

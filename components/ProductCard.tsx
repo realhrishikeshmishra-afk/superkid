@@ -23,8 +23,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="card-product group flex flex-col">
       <Link href={`/products/${product.id}`} className="block relative overflow-hidden rounded-t-[18px]">
-        <div className="w-full aspect-square bg-[#fdf2f7] flex items-center justify-center text-7xl transition-transform duration-500 group-hover:scale-105">
-          {product.emoji || "🏷️"}
+        <div className="w-full aspect-square bg-[#fdf2f7] flex items-center justify-center transition-transform duration-500 group-hover:scale-105 relative">
+          <img src={`https://loremflickr.com/600/600/stickers,kids?random=${product.id || Math.random()}`} alt={product.name} className="w-full h-full object-cover" />
         </div>
         {isSale && (
           <span className="badge-sale absolute top-3 left-3">

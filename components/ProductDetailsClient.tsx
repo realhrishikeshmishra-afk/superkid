@@ -76,9 +76,7 @@ export default function ProductDetailsClient({ product, relatedProducts }: Produ
                 <Heart className={`w-5 h-5 transition-colors ${wishlisted ? "fill-[#e91c78] text-[#e91c78]" : "text-[#8c5d73]"}`} />
               </button>
 
-              <span className="text-[180px] sm:text-[220px] leading-none select-none group-hover:scale-105 transition-transform duration-500">
-                {product.emoji || "🏷️"}
-              </span>
+              <img src={`https://loremflickr.com/800/800/stickers,kids?random=${product.id || Math.random()}`} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             </div>
 
             {/* Thumbnails */}
@@ -86,9 +84,9 @@ export default function ProductDetailsClient({ product, relatedProducts }: Produ
               {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
-                  className="aspect-square bg-white rounded-[14px] border-2 border-[#e91c78]/20 hover:border-[#e91c78] flex items-center justify-center text-3xl cursor-pointer transition-all"
+                  className="aspect-square bg-white rounded-[14px] border-2 border-[#e91c78]/20 hover:border-[#e91c78] flex items-center justify-center cursor-pointer transition-all overflow-hidden"
                 >
-                  {product.emoji || "🏷️"}
+                  <img src={`https://loremflickr.com/200/200/stickers,kids?random=${product.id || i}`} alt="Thumbnail" className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>

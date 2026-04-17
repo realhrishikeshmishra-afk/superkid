@@ -89,7 +89,7 @@ export default function HeroSection() {
             className="w-[380px] h-[380px] rounded-[40px] bg-white shadow-[0_20px_80px_-10px_rgba(0,0,0,0.12)] flex items-center justify-center text-[220px] leading-none relative overflow-hidden fade-up"
             key={`img-${current}`}
           >
-            <span className="select-none">{slide.emoji}</span>
+            <img src={`https://loremflickr.com/800/800/stickers,kids?random=${current}`} alt="Slide image" className="w-full h-full object-cover select-none z-10 relative" />
             {/* Dot grid decorative bg */}
             <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[radial-gradient(#12040a_1px,transparent_1px)] [background-size:18px_18px]" />
           </div>
